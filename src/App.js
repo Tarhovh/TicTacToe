@@ -1,12 +1,11 @@
 import './App.css';
-// import Board from './components/Board';
-import GameLogic from './components/GameLogic';
+import Board from './components/Board';
 
 function App() {
   return (
     <div className="App">
       <h1>Tic Tac Toe</h1>
-      <GameLogic/>
+      <Board/>
     </div>
   );
 }
