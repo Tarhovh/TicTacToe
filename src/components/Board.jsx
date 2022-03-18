@@ -1,22 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Square from "./Square";
 
 function Board() {
-  const [squares, setSquares] = useState(Array(9));
-  // console.log((squares[1]))
-  // squares.map((e) => console.log(e));
+  const [squares, setSquares] = useState(Array(9).fill(null));
   const [isO, setIsO] = useState(false);
   const [gameState, setGameState] = useState(false);
 
   function handleBtnclick(i) {
-    squares[i] = isO ? "O" : "X";
+    if (isO && squares[i] !== "X") {
+      squares[i] = "O";
+    }
+    else if (!isO && squares[i] !== 'O') {
+      squares[i] = "X"
+    }
     setSquares(squares);
-    setIsO(!isO);
+    setIsO(!isO)
   }
 
   function restart() {
     setIsO(true);
-    setSquares(Array(9));
+    setSquares(Array(9).fill(null));
   }
 
   function winner(squares) {
@@ -32,10 +35,8 @@ function Board() {
     ];
 
     for (let i = 0; i < winningPatterns.length; i++) {
-    
-      const [a, b, c] = winningPatterns[i];
 
-      //  console.log(a[key])
+      const [a, b, c] = winningPatterns[i];
 
       if (
         squares[a] &&
@@ -44,18 +45,36 @@ function Board() {
       ) {
         return `the winner is ${squares[a]}`;
       }
-      // console.log(squares[i+1])
-   
-    return;
+
+      else if (
+        squares[0] &&
+        squares[1] &&
+        squares[2] &&
+        squares[3] &&
+        squares[4] &&
+        squares[5] &&
+        squares[6] &&
+        squares[7] &&
+        squares[8] &&
+
+        squares[a] !== squares[b] &&
+        squares[b] !== squares[c]
+      ) {
+        return `Draw`
+      }
+    }
+
   }
-}
+
 
   function squareRendering(i) {
     return (
       <Square
         value={squares[i]}
         onClick={() => {
-          handleBtnclick(i);
+          if (!winner(squares || squares[i] === 'null')) {
+            handleBtnclick(i);
+          }
         }}
       />
     );
