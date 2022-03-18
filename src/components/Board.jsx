@@ -4,7 +4,6 @@ import Square from "./Square";
 function Board() {
   const [squares, setSquares] = useState(Array(9).fill(null));
   const [isO, setIsO] = useState(false);
-  const [gameState, setGameState] = useState(false);
 
   function handleBtnclick(i) {
     if (isO && squares[i] !== "X") {
