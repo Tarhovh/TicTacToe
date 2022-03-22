@@ -1,24 +1,26 @@
-import React, { useEffect, useState } from "react";
-import Square from "./Square";
+import React, { useState } from "react";
 
-function Board() {
+import Square from "../Square";
+
+function Board({ players }) {
   const [squares, setSquares] = useState(Array(9).fill(null));
-  const [isO, setIsO] = useState(false);
+  const [isX, setIsX] = useState(false);
+  const [user, setUser] = useState("");
+
+  const notFilledSquares = squares
+    .map((square) => (square === null ? square : "X"))
+    .filter((val) => val === null);
 
   function handleBtnclick(i) {
-    if (isO && squares[i] !== "X") {
+    if (isX && squares[i] !== "O") {
+      squares[i] = "X";
+      setUser(players[0].name);
+    } else if (!isX && squares[i] !== "X") {
       squares[i] = "O";
-    }
-    else if (!isO && squares[i] !== 'O') {
-      squares[i] = "X"
+      setUser(players[1].name);
     }
     setSquares(squares);
-    setIsO(!isO)
-  }
-
-  function restart() {
-    setIsO(true);
-    setSquares(Array(9).fill(null));
+    setIsX(!isX);
   }
 
   function winner(squares) {
@@ -34,7 +36,6 @@ function Board() {
     ];
 
     for (let i = 0; i < winningPatterns.length; i++) {
-
       const [a, b, c] = winningPatterns[i];
 
       if (
@@ -42,36 +43,29 @@ function Board() {
         squares[a] === squares[b] &&
         squares[b] === squares[c]
       ) {
-        return `the winner is ${squares[a]}`;
-      }
-
-      else if (
-        squares[0] &&
-        squares[1] &&
-        squares[2] &&
-        squares[3] &&
-        squares[4] &&
-        squares[5] &&
-        squares[6] &&
-        squares[7] &&
-        squares[8] &&
-
+        return `Winner: ${user} 
+      ( ${squares[a]} )`;
+      } else if (
+        !notFilledSquares.length &&
         squares[a] !== squares[b] &&
         squares[b] !== squares[c]
       ) {
-        return `Draw`
+        return `Draw`;
       }
     }
-
   }
 
+  function restart() {
+    setSquares(Array(9).fill(null));
+    setIsX(true);
+  }
 
   function squareRendering(i) {
     return (
       <Square
         value={squares[i]}
         onClick={() => {
-          if (!winner(squares || squares[i] === 'null')) {
+          if (!winner(squares || squares[i] === "null")) {
             handleBtnclick(i);
           }
         }}
@@ -82,6 +76,7 @@ function Board() {
   return (
     <>
       <h1>{winner(squares)}</h1>
+
       <div className="board">
         <div className="boardRow">
           {squareRendering(0)}
@@ -100,8 +95,10 @@ function Board() {
           {squareRendering(7)}
           {squareRendering(8)}
         </div>
-        <button onClick={restart}>Restart</button>
       </div>
+      <button className="resetBtn" onClick={restart}>
+        Restart
+      </button>
     </>
   );
 }
