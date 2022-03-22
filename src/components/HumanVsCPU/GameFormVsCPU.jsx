@@ -18,7 +18,7 @@ function GameFormVsCPU() {
   return (
     <div className="container">
       <div className="mainBoard">
-        <Board players={[{ name: player }]} />
+        <Board player={player} />
       </div>
 
       <div className="nameField">

@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 
 import Square from "../Square";
 
-function Board({ players }) {
-  const player = {
+function Board({ player }) {
+  const players = {
     PC: {
       Sym: "O",
       Name: "PC",
@@ -11,7 +11,7 @@ function Board({ players }) {
 
     Human: {
       Sym: "X",
-      Name: players[0].name,
+      Name: player,
     },
   };
 
@@ -25,8 +25,8 @@ function Board({ players }) {
 
   function handleBtnclick(i) {
     if (!isPCNext && squares[i] === null) {
-      squares[i] = player?.Human?.Sym;
-      setUser(player.Human.Name);
+      squares[i] = players?.Human?.Sym;
+      setUser(players.Human.Name);
       setIsPCNext(true);
     } else if (isPCNext) {
       PCPlay();
@@ -60,8 +60,8 @@ function Board({ players }) {
   function PCPlay() {
     const PCMove = getPCTurn(squares);
 
-    squares[PCMove] = player?.PC?.Sym;
-    setUser(player?.PC?.Name);
+    squares[PCMove] = players?.PC?.Sym;
+    setUser(players?.PC?.Name);
     setIsPCNext(false);
   }
 
